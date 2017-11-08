@@ -11,18 +11,17 @@ var run = function(args, done) {
   }).on('close', done);
 };
 
-var check = function(pth,callback) {
+var check = function(pth,remOld,callback) {
   if (process.platform === 'win32') {
     var cmd = process.argv[1];
     debug('processing squirrel command `%s`', cmd);
     var target = pth || path.basename(process.execPath);
 
     if (cmd === '--squirrel-install' || cmd === '--squirrel-updated') {
-      fs.unlink(path.resolve('C:/Users/Public/Desktop/SmarterProctoring.lnk'),(err,res) => {
+      fs.unlink(path.resolve(remOld),(err,res) => {
         run(['--createShortcut=' + target + ''], app.quit);
         return callback(true);
       })
-      
     }
     if (cmd === '--squirrel-uninstall') {
       run(['--removeShortcut=' + target + ''], app.quit);
